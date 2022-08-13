@@ -13,7 +13,6 @@ function solution(s) {
       }
       temp += s[i];
     }
-    console.log(temp, s);
     const num = temp.length;
     s = num.toString(2);
   }
@@ -21,7 +20,7 @@ function solution(s) {
 }
 
 function solution(s) {
-  let [count, remove] = [0, 0]; // 비구조 할당
+  let [count, remove] = [0, 0];
 
   function recursion() {
     if (s === "1") return [count, remove];
