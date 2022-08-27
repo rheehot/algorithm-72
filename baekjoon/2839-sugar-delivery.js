@@ -1,14 +1,12 @@
 const fs = require("fs");
 const { join } = require("path/posix");
-let input = fs.readFileSync("./2839-sugar-delivery.txt").toString().split("\n");
+let input = fs.readFileSync("/dev/stdin").toString().split("\n");
 let sugar = Number(input[0]);
 let basket5 = Math.trunc(sugar / 5);
 let basket3 = 0;
 let remaining = sugar - basket5 * 5;
 
-if (remaining === 0) {
-  return;
-} else if (remaining % 3 === 0) {
+if (remaining % 3 === 0) {
   basket3 = remaining / 3;
   remaining = 0;
 } else {
