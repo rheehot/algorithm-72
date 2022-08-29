@@ -1,71 +1,73 @@
 const fs = require("fs");
 const { join } = require("path/posix");
-let row = fs.readFileSync("/dev/stdin").toString().split("\n");
+let row = fs.readFileSync("./2580-sudoku.txt").toString().split("\n");
 
+// 들어갈 수 있는 숫자 배열
+const candidate = new Array(9).fill(1).map((el, i) => String(el + i));
+
+// 1. 가로행 기준 배열
 rowArr = [];
 row.forEach((el) => {
   rowArr.push(el.split(" "));
 });
 
-rowArr.forEach((rowEl, i) => {
-  const numberList = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
-  rowEl.forEach((el, elIndex) => {
-    if (numberList.includes(el)) numberList.splice(numberList.indexOf(el), 1);
+// 가로행에 들어가지 않은 숫자를 찾는다.
+rowArr.forEach((rowEl, rowIndex) => {
+  const rowCandidate = [...candidate];
+  rowEl.forEach((el, i) => {
+    if (rowCandidate.includes(el)) {
+      rowCandidate.splice(rowCandidate.indexOf(el), 1);
+    }
   });
-
-  // 가로줄에 빈칸이 하나인 경우
-  if (numberList.length === 1) {
-    rowArr[i][rowEl.indexOf("0")] = numberList[0];
+  // 후보 숫자가 하나만 남은 경우, 남은 숫자를 빈자리에 대입한다.
+  if (rowCandidate.length === 1) {
+    rowEl[rowEl.indexOf("0")] = rowCandidate[0];
   }
+});
 
+// 2. 세로행 기준 배열
+colArr = new Array(9).fill([]);
+rowArr.forEach((rowEl) => {
+  rowEl.forEach((_, elIndex) => {
+    colArr[elIndex] = [...colArr[elIndex], ...rowEl[elIndex]];
+  });
+});
+
+// 세로행에 들어가지 않은 숫자를 찾는다.
+colArr.forEach((colEl, colIndex) => {
+  const colCandidate = [...candidate];
+  colEl.forEach((el, i) => {
+    if (colCandidate.includes(el)) {
+      colCandidate.splice(colCandidate.indexOf(el), 1);
+    }
+  });
+  if (colCandidate.length === 1) {
+    rowArr[colEl.indexOf("0")][colIndex] = colCandidate[0];
+  }
+});
+
+// 3. 3*3 기준 배열
+rowArr.forEach((rowEl, rowIndex) => {
   rowEl.forEach((el, elIndex) => {
     if (el === "0") {
-      const colArr = rowArr.map((rowEl) => rowEl[elIndex]);
-      numberList2 = [...numberList];
-      colArr.forEach((el) => {
-        if (numberList2.includes(el))
-          numberList2.splice(numberList2.indexOf(el), 1);
+      const squareArr = [];
+      new Array(3).fill("").forEach((_, y) => {
+        new Array(3).fill("").forEach((_, x) => {
+          squareArr.push(
+            rowArr[Math.trunc(rowIndex / 3) * 3 + y][
+              Math.trunc(elIndex / 3) * 3 + x
+            ]
+          );
+        });
       });
-      // 들어갈 수 있는 값이 하나만 남은 경우
-      if (numberList2.length === 1) {
-        rowArr[i][elIndex] = numberList2[0];
-      }
+      squareCandidate = [...candidate];
+      squareArr.forEach((el, i) => {
+        if (squareCandidate.includes(el)) {
+          squareCandidate.splice(squareCandidate.indexOf(el), 1);
+        }
+      });
+      rowArr[rowIndex][elIndex] = squareCandidate[0];
     }
   });
 });
-rowArr.forEach((rowEl, i) => {
-  const numberList2 = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-  numberList2.forEach((num, numIndex) => {
-    if (rowEl.includes(num)) numberList2.splice(numIndex, 1);
-  });
-  rowEl.forEach((el, elIndex) => {
-    if (el !== "0") return;
-    // 후보가 여러 개 남은 경우, 3*3 에서 도출
-    const rect = [];
-    const numberList3 = [...numberList2];
-    // 빈칸의 위치
-    const row = i;
-    const col = elIndex;
-    const rowStart = Math.floor(row / 3) * 3;
-    const colStart = Math.floor(col / 3) * 3;
-
-    rect.push(rowArr[rowStart][colStart]);
-    rect.push(rowArr[rowStart][colStart + 1]);
-    rect.push(rowArr[rowStart][colStart + 2]);
-    rect.push(rowArr[rowStart + 1][colStart]);
-    rect.push(rowArr[rowStart + 1][colStart + 1]);
-    rect.push(rowArr[rowStart + 1][colStart + 2]);
-    rect.push(rowArr[rowStart + 2][colStart]);
-    rect.push(rowArr[rowStart + 2][colStart + 1]);
-    rect.push(rowArr[rowStart + 2][colStart + 2]);
-    numberList3.forEach((candidate) => {
-      if (rect.includes(candidate))
-        numberList3.splice(numberList3.indexOf(candidate), 1);
-    });
-    rowArr[i][elIndex] = numberList3[0];
-  });
-});
-
-const result = rowArr.map((el) => el.join(" "));
-console.log(result.join("\n"));
+console.log(rowArr.map((el) => el.join(" ")).join("\n"));
