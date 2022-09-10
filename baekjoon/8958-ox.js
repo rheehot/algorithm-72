@@ -1,6 +1,6 @@
 const fs = require("fs");
-const input = fs.readFileSync("/dev/stdin").toString().split("\n");
-// const input = fs.readFileSync("./8958-ox.txt").toString().split("\n");
+// const input = fs.readFileSync("/dev/stdin").toString().trim().split("\n");
+const input = fs.readFileSync("./8958-ox.txt").toString().trim().split("\n");
 input.shift();
 if (input)
   input.forEach((el) => {
@@ -13,5 +13,9 @@ if (input)
           score.push(i + 1);
         });
     });
-    if (score.length) console.log(score.reduce((a, c) => a + c));
+    console.log(
+      score.reduce((a, c) => {
+        return a + c;
+      }, 0)
+    );
   });
