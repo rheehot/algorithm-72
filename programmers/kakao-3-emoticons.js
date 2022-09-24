@@ -20,7 +20,6 @@ function solution(users, emoticons) {
     return results;
   };
   const saleList = getPermutations(availSaleList, emoticons.length);
-  // console.log(saleList)
 
   let regist = 0;
   let amount = [];
@@ -54,7 +53,6 @@ function solution(users, emoticons) {
     thisSaleRegist = 0;
     thisSaleAmount = 0;
   });
-  console.log(regist, amount);
 }
 
 solution(
@@ -65,6 +63,7 @@ solution(
   [7000, 9000]
 );
 // [1, 5400]
+
 // solution(
 // [[40, 2900], [23, 10000], [11, 5200], [5, 5900], [40, 3100], [27, 9200], [32, 6900]], [1300, 1500, 1600, 4900])
 // [4, 13860]
