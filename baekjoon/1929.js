@@ -21,7 +21,7 @@ new Array(input[1] - input[0] + 1).fill(input[0]).forEach((el, i) => {
       break;
     }
   }
-  if (valid) result.push(num);
+  if (valid && num !== 1) result.push(num);
 });
 result.forEach((el) => {
   console.log(el);
