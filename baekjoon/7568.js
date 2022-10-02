@@ -1,6 +1,6 @@
 const fs = require("fs");
-// const input = fs.readFileSync("/dev/stdin").toString().trim().split("\n");
-const input = fs.readFileSync("./7568.txt").toString().trim().split("\n");
+const input = fs.readFileSync("/dev/stdin").toString().trim().split("\n");
+// const input = fs.readFileSync("./7568.txt").toString().trim().split("\n");
 const result = new Array(Number(input[0])).fill(1);
 input.shift();
 input.forEach((el, i) => {
