@@ -1,9 +1,8 @@
-function solution(input) {
-  const arr = input.split(" ").map((el) => Number(el));
-  const max = Math.max(...arr);
-  const sum = arr.reduce((a, c) => a + c);
+function solution(A, B, C) {
+  const max = Math.max(A, B, C);
+  const sum = A + B + C;
   return sum - max > max ? "YES" : "NO";
 }
 
-console.log(solution("6 7 11"));
-console.log(solution("13 33 17"));
+console.log(solution(6, 7, 11)); // "YES"
+console.log(solution(13, 33, 17)); // "NO"
