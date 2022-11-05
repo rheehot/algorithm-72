@@ -1,14 +1,6 @@
-function solution(input) {
-  const today = input.split("\n")[0];
-  const car = input.split("\n")[1].split(" ");
-  return car.filter((el) => el.split("")[1] === today).length;
+function solution(arr) {
+  return Math.min(...arr);
+  // return Math.min.apply(null, arr);
 }
 
-console.log(
-  solution(`3
-  25 23 11 47 53 17 33`)
-); // 3
-console.log(
-  solution(`0
-  12 20 54 30 87 91 30`)
-); //3
+console.log(solution([5, 3, 7, 11, 2, 15, 17])); // 2
