@@ -1,70 +1,63 @@
 const fs = require("fs");
 // const input = fs.readFileSync("/dev/stdin").toString().trim().split("\n");
 // const input = fs.readFileSync("./1260.txt").toString().trim().split("\n");
-const input = `
-5 5 1
-1 2
+const input = `5 4 1
 2 3
-3 1
-1 4
-3 5
-`
+3 4
+4 5
+5 2`
   .toString()
   .trim()
   .split("\n");
 
-const vertexLength = Number(input[0].split(" ")[0]);
-const degeLength = Number(input[0].split(" ")[1]);
+// 시작할 정점
 const start = Number(input[0].split(" ")[2]);
-const nodeArr = [];
-input.shift();
-input.forEach((el) => {
-  const left = Number(el.split(" ")[0]);
-  const right = Number(el.split(" ")[1]);
-  if (!nodeArr[left]) nodeArr[left] = [right];
-  else nodeArr[left] = [...nodeArr[left], right];
-  if (!nodeArr[right]) nodeArr[right] = [left];
-  else nodeArr[right] = [...nodeArr[right], left];
-});
-nodeArr.map((el) => el.sort());
 
-// bfs
-const bfs = () => {
-  const check = [];
-  const result = [start];
-  const queue = [start];
-  while (queue.length) {
-    const current = queue.shift();
-    // 이미 확인했으면
-    if (check[current]) return;
-    check[current] = true;
-    nodeArr[current].forEach((vertex) => {
-      if (result.includes(vertex)) return;
-      result.push(vertex);
-      queue.push(vertex);
+// 각 정점과 연결된 정점을 담은 배열
+const temp = [];
+for (let i = 1; i < input.length; i++) {
+  const left = Number(input[i].split(" ")[0]);
+  const right = Number(input[i].split(" ")[1]);
+  if (temp[left]) temp[left] = [...temp[left], right];
+  else temp[left] = [right];
+
+  if (temp[right]) temp[right] = [...temp[right], left];
+  else temp[right] = [left];
+}
+// 오름차순으로 정렬
+const nodeList = temp.map((el) => el.sort((a, b) => a - b));
+
+const dfsResult = [];
+const dfs = (vertex) => {
+  if (dfsResult.includes(vertex)) return;
+  dfsResult.push(vertex);
+  // 정점과 연결된 정점이 있는 경우만 수행
+  if (nodeList[vertex])
+    nodeList[vertex].forEach((el) => {
+      dfs(el);
     });
-  }
-  return result;
 };
+dfs(start);
 
-// dfs
+const bfsResult = [];
 const check = [];
-const result = [start];
-const dfs = () => {
-  current = result[result.length - 1];
-  if (check[current]) return;
-  check[current] = true;
-  for (let i = 0; i < nodeArr[current].length; i++) {
-    const vertex = nodeArr[current][i];
-    if (result.includes(vertex)) continue;
-    result.push(vertex);
-    break;
-  }
-  dfs();
+const queue = [start];
+const bfs = () => {
+  const vertex = queue.shift();
+  if (check[vertex]) return;
+  if (bfsResult.includes(vertex)) return;
+  check[vertex] = true;
+  bfsResult.push(vertex);
+  if (nodeList[vertex])
+    nodeList[vertex].forEach((el) => {
+      queue.push(el);
+    });
 };
-dfs();
-console.log(nodeArr);
-console.log(...result);
-// 1 2 3 5 4
-console.log(...bfs(start));
-// 1 2 3 4 5
+while (queue.length) {
+  bfs(start);
+}
+
+console.log(...dfsResult);
+console.log(...bfsResult);
+// 4 5 6 8 2 10 1 7 3 9
+// 4 5 6 10 8 1 2 3 9 7
