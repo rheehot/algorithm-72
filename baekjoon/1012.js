@@ -1,6 +1,6 @@
 // 입력값
-const fs = require("fs");
-const input = fs.readFileSync("/dev/stdin").toString().trim().split("\n");
+import { readFileSync } from "fs";
+const input = readFileSync("/dev/stdin").toString().trim().split("\n");
 
 // 각 테스트 케이스의 배추밭 배열
 const arr = [];
