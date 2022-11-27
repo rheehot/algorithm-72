@@ -9,4 +9,5 @@ function solution(input) {
   return result;
 }
 
+
 console.log(solution(["good", "time", "good", "time", "student"]));
