@@ -1,18 +1,21 @@
 const fs = require("fs");
-const str = fs.readFileSync("/dev/stdin").toString().toUpperCase();
-let max = 0;
-let maxAlphabet;
-let duplicate = false;
-str.split("").forEach((alphabet) => {
-  const newStr = str.split(alphabet).join("");
-  const lengthDiff = str.length - newStr.length;
-  if (lengthDiff > max) {
-    max = lengthDiff;
-    maxAlphabet = alphabet;
-  }
-  if (lengthDiff === max && maxAlphabet !== alphabet) {
-    duplicate = true;
+// const str = fs.readFileSync("/dev/stdin").toString().toUpperCase();
+const str = fs.readFileSync("./1157-word-study.txt").toString().toUpperCase();
+
+const arr = [];
+const count = {};
+str.split("").forEach((el) => {
+  if (arr.includes(el)) {
+    count[el] = ++count[el];
     return;
   }
+  arr.push(el);
+  count[el] = 0;
 });
-console.log(duplicate ? "?" : maxAlphabet);
+
+const max = Math.max(...Object.values(count));
+const result = [];
+Object.entries(count).forEach((el) => {
+  if (el[1] === max) result.push(el[0]);
+});
+console.log(result.length === 1 ? result[0] : "?");
