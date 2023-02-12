@@ -4,6 +4,7 @@ function solution(n, donuts) {
   const 박스수 = 사람수 / 도넛수;
   return 박스수;
 }
+
 function solution(n, donuts) {
   return n / donuts;
 }

@@ -4,6 +4,7 @@ function solution(n, members) {
   const 거스름돈 = 가진돈 - 낼돈;
   return 거스름돈;
 }
+
 function solution(n, members) {
   return 6000 + n - 4100 * members;
 }

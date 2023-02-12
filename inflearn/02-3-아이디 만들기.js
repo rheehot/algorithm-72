@@ -4,6 +4,7 @@ function solution(name, birth) {
   const 아이디 = 이름 + 생일;
   return 아이디;
 }
+
 function solution(name, birth) {
   return name + birth;
 }
